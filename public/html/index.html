@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>chat</title>
+  </head>
+  <body>
+    <h1>hii welcome to chat</h1>
+    <form action="/">
+      <input type="text" name="msg">
+      <button type="submit" id='send'>SEND</button>
+    </form>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="/js/mustache.js"></script>
+    <script src="/js/moment.js"></script>
+    <script src="/js/script.js"></script>
+    <script type="text/template" id="temp">
+      <li>
+        <h3>{{from}}</h3>
+        <span>{{time}}</span>
+        <h5>{{text}}</h5>
+      </li>
+    </script>
+   
+  </body>
+</html>
