@@ -4,7 +4,7 @@ const path = require("path");
 const http = require("http").createServer(app);
 let io = require("socket.io")(http);
 var valid = require("./public/js/validation.js");
-const port = process.env.PORT || 8080;
+const port = process.env.PORT || 8000;
 const generator = require("./util/message");
 const memeber=require('./util/user')
 const users=new memeber()
@@ -23,8 +23,6 @@ app.get("/chat", (req, res) =>
 // io
 io.on("connection", (socket) => {
   console.log("a New user just  connected");
-
-
   socket.on("join", (query, callback) => {
     if ((!valid(query.usr)) || (!valid(query.room))) {
      return  callback("name and room is required");
