@@ -8,6 +8,9 @@
     "test": "mocha /*test.js",
     "test-watch": "nodemon --exec \" npm test\" "
   },
+    "engines" : {
+    "node" : "^10"
+  },
   "author": "",
   "license": "ISC",
   "dependencies": {
