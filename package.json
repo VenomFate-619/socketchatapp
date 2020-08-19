@@ -4,9 +4,7 @@
   "description": "socket pratice",
   "main": "app.js",
   "scripts": {
-    "start": "nodemon app",
-    "test": "mocha /*test.js",
-    "test-watch": "nodemon --exec \" npm test\" "
+   "start" : "node app.js"
   },
     "engines" : {
     "node" : "^10"
