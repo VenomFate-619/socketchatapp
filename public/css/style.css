@@ -1,82 +1,211 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+  height: 100vh;
+}
+/* intro */
+.intro {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  background: #3282b8;
+  color: white;
+}
+.roomName {
+  font-style: normal;
+  font-weight: bold;
+  font-size: 2em;
+  mix-blend-mode: normal;
+  text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  padding: 11px;
+}
+.dots {
+  width: 43px;
+  padding: 12px;
+  position: relative;
+}
 .box {
-    width: 500px;
-    margin: 200px 0;
+  position: absolute;
+  background: gray;
+  left: -64px;
+  top: 21px;
+  padding: 12px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  width: 6em;
+  font-size: 17px;
+  align-items: baseline;
+}
+.box div {
+  display: flex;
+  align-content: center;
+  margin: 3px;
+}
+/* participated */
+.part {
+  width: 100%;
+  height: 102px;
+  background: red;
+  border-radius: 22px 22px 0 0;
+  /* position: fixed;
+  top: 62px; */
+}
+.no {
+  padding: 9px;
+  margin-left: 5px;
+}
+.info {
+  display: inline-block;
+  margin: 0 12px;
+}
+.img {
+  background: yellow;
+  width: 40px;
+  height: 41px;
+  border-radius: 50%;
+}
+.name {
+  text-align: center;
+}
+/* input */
+.input {
+  height: 50px;
+  background: violet;
+  border-radius: 500px;
+  position: fixed;
+  bottom: 6px;
+  left: 5px;
+  right: 50px;
+  display: flex;
+  justify-content: space-evenly;
+  align-content: end;
+  align-items: center;
+}
+.send {
+  position: fixed;
+  bottom: 18px;
+  right: 9px;
+}
+.input .material-icons {
+  font-size: 27px;
+}
+.input textarea {
+  width: 58%;
+  background: transparent;
+  border: none;
+  outline: none;
+  font-size: 15px;
+}
+/* main section */
+.main {
+  height: calc(88.8% - 156.68px);
+  overflow-x: hidden;
+}
+.line {
+  width: 100%;
+  height: 1.1px;
+  margin: 17px 0;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+.line::after,
+.line::before {
+  z-index: 12;
+  background: white;
+  content: "";
+  flex: 1 1;
+  border-bottom: 2px solid #000;
+  margin: auto;
+}
+ul {
+  list-style: none;
+}
+.other {
+  display: grid;
+  grid-template-columns: 0fr 0.43fr;
+  /* grid-template-rows: repeat(2, 1fr); */
+  gap: 1px 17px;
+  grid-template-areas: ". name" "Image msg" ". time";
+  margin: 3px 0;
 }
 
-.shape1{
-    position: relative;
-    height: 150px;
-    width: 150px;
-    background-color: #0074d9;
-    border-radius: 80px;
-    float: left;
-    margin-right: -50px;
-}
-.shape2 {
-    position: relative;
-    height: 150px;
-    width: 150px;
-    background-color: #0074d9;
-    border-radius: 80px;
-    margin-top: -30px;
-    float: left;
-}
-.shape3 {
-    position: relative;
-    height: 150px;
-    width: 150px;
-    background-color: #0074d9;
-    border-radius: 80px;
-    margin-top: -30px;
-    float: left;
-    margin-left: -31px;
-}
-.shape4 {
-    position: relative;
-    height: 150px;
-    width: 150px;
-    background-color: #0074d9;
-    border-radius: 80px;
-    margin-top: -25px;
-    float: left;
-    margin-left: -32px;
-}
-.shape5 {
-    position: relative;
-    height: 150px;
-    width: 150px;
-    background-color: #0074d9;
-    border-radius: 80px;
-    float: left;
-    margin-right: -48px;
-    margin-left: -32px;
-    margin-top: -30px;
-}
-.shape6 {
-    position: relative;
-    height: 150px;
-    width: 150px;
-    background-color: #0074d9;
-    border-radius: 80px;
-    float: left;
-    margin-right: -20px;
-    margin-top: -35px;
-}
-.shape7 {
-    position: relative;
-    height: 150px;
-    width: 150px;
-    background-color: #0074d9;
-    border-radius: 80px;
-    float: left;
-    margin-right: -20px;
-    margin-top: -57px;
-}
-.float {
-    position: absolute;
-    z-index: 2;
+.other .Image {
+  grid-area: Image;
+  background: yellow;
+  width: 40px;
+  height: 41px;
+  border-radius: 50%;
 }
 
-.form {
-    margin-left: 145px;
+.other .nameofpart {
+  grid-area: name;
+  display: flex;
+  align-items: flex-end;
+  margin-left: 9px;
+}
+
+.other .msg {
+  grid-area: msg;
+}
+
+.other .time {
+  grid-area: time;
+  font-style: normal;
+  font-weight: 300;
+  font-size: 16px;
+  letter-spacing: 0.005em;
+  /* text-align: end; */
+}
+.other li {
+  background: #c4c4c4;
+  border-radius: 14px 14px 14px 0;
+  padding: 6px;
+  margin-top: 3px;
+  display: inline-block;
+}
+.me {
+  display: grid;
+  grid-template-columns: 0.68fr 0.38fr;
+  grid-template-areas: ". mmsg" ". mtime";
+  margin-top: 12px;
+  margin-right: 12px;
+}
+.me .msg {
+  grid-area: mmsg;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.me .ttime {
+  grid-area: mtime;
+  display: flex;
+  justify-content: flex-end;
+}
+.me ul li {
+  background: #c4c4c4;
+  border-radius: 14px 14px 0 14px;
+  padding: 6px;
+  margin-top: 3px;
+  display: inline-block;
+}
+.material-icons {
+  cursor: pointer;
+}
+@media only screen and (min-width: 768px) {
+  .input textarea {
+    width: 78%;
+  }
+}
+@media only screen and (min-width: 1024px) {
+  .input textarea {
+    width: 88%;
+  }
+  .me {
+    grid-template-columns: 0.68fr 0.39fr;
+  }
 }

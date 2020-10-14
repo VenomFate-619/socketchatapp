@@ -18,7 +18,7 @@ app.use(bodyparser.urlencoded({ extended: false }));
 // route
 app.get("/", (req, res) => res.sendFile("html/form.html", { root: "public" }));
 app.get("/chat", (req, res) =>
-  res.sendFile("html/index.html", { root: "public" })
+  res.sendFile("html/main.html", { root: "public" })
 );
 // io
 io.on("connection", (socket) => {
@@ -31,8 +31,8 @@ io.on("connection", (socket) => {
     users.removeUser(socket.id)
     users.addUser(socket.id,query.usr,query.room)
     io.to(query.room).emit('updateUsersList',users.getUserList(query.room))
-    socket.emit("serverMsg", generator("Admin", "Welcome"));
-    socket.broadcast.to(query.room).emit("serverMsg", generator("Admin", `${query.usr} joined`));
+    socket.emit("serverMsg", generator("Admin", "Welcome"));  //admin
+    socket.broadcast.to(query.room).emit("serverMsg", generator("Admin", `${query.usr} joined`));  //admin
     callback();
   
   });
@@ -41,12 +41,8 @@ io.on("connection", (socket) => {
   socket.on("createmsg", (msg) => {
     console.log("client", msg);
     // msg to all client
-    // io.emit('serverMsg', {
-    //   from: msg.from,
-    //   text: msg.text,
-    //   time: new Date()
-    // })
-    io.to(msg.room).emit("serverMsg", generator(msg.from, msg.text));
+    socket.broadcast.to(msg.room).emit('other',generator(msg.from,msg.text))
+    // io.to(msg.room).emit("serverMsg", generator(msg.from, msg.text));
   });
 
   // disconnectin
@@ -56,7 +52,7 @@ io.on("connection", (socket) => {
     if(leave)
     {
       io.to(leave.room).emit('updateUsersList',users.getUserList(leave.room))
-      io.to(leave.room).emit('serverMsg',generator('Admin',`${leave.name} has left  ${leave.room} room`))
+      io.to(leave.room).emit('serverMsg',generator('Admin',`${leave.name} left`))
     }
   });
 });

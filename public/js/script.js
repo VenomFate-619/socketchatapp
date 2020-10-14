@@ -1,53 +1,134 @@
+// emoji pack
+// import { EmojiButton } from "../../node_modules/@joeattardi/emoji-button/dist/index.js";
+// import { EmojiButton } from '@joeattardi/emoji-button';
+// util
+var stringToHTML = function (str) {
+  var parser = new DOMParser();
+  var doc = parser.parseFromString(str, "text/html");
+  // console.log(doc.body);
+  return doc.body;
+};
+const capitalize = (text) => {
+  text = text.split(" ");
+  let converted = ``;
+
+  for (let i = 0; i < text.length; i++) {
+    text[i] = `${text[i].charAt(0).toUpperCase()}${text[i].substr(1)}`;
+  }
+
+  for (let t of text) {
+    converted += `${t} `;
+  }
+
+  converted = converted.trim();
+  return converted;
+};
+var t = document.querySelector(".input textarea");
+var trigger = document.getElementById("trigger");
+// const picker = new EmojiButton({
+//   theme: "auto",
+//   autoHide: false,
+//   showPreview: false,
+//   position: "top-end",
+//   // position:'bottom-start',
+//   autoFocusSearch: false,
+//   //   for mobile
+//   emojiSize: "1.4em",
+// });
+// picker.on("emoji", (selection) => {
+
+//   t.value += selection.emoji;
+
+// });
+
+// trigger.addEventListener("click", () => picker.togglePicker(trigger));
+
+// url
 var parsedUrl = new URL(window.location.href);
+var query = {
+  usr: parsedUrl.searchParams.get("usr"),
+  room: parsedUrl.searchParams.get("room"),
+};
+// socket
 var socket = io();
+// on connection
 socket.on("connect", function () {
   console.log("new user connected");
-//  var parsedUrl = new URL(window.location.href);
-  var query = {
-    usr: parsedUrl.searchParams.get("usr"),
-    room: parsedUrl.searchParams.get("room")
-  };
+  document.querySelector("body > div.intro > div.roomName").innerHTML =
+    query.room;
   socket.emit("join", query, function (err) {
     if (err) {
       alert(err);
       window.location.href = "/";
     } else {
-      console.log("fwg3g");
+      console.log(query.usr + " joined");
     }
   });
- 
 });
-socket.on('updateUsersList',function(user){
+// participate
+socket.on("updateUsersList", function (user) {
+  let template = document.getElementById("member").innerHTML;
+  var member = document.querySelector(
+    "body > div.intro > div.part > div.member"
+  );
+  if (member.innerHTML != "") {
+    member.innerHTML = "";
+  }
   console.log(user);
-})
+  user.forEach((element) => {
+    if (element !== query.usr) {
+      let rendered = Mustache.render(template, {
+        name: capitalize(element),
+      });
+      let res = stringToHTML(rendered);
+      member.prepend(res.getElementsByTagName("div")[0]);
+    }
+  });
+});
 // from server
 socket.on("serverMsg", (msg) => {
-  var template = document.getElementById("temp").innerHTML;
-  var rendered = Mustache.render(template, {
-    from: msg.from,
+  let template = document.getElementById("greet").innerHTML;
+  let rendered = Mustache.render(template, {
+    // from: msg.from,
     text: msg.text,
-    time: msg.time,
+    // time: msg.time,
   });
-  var h = document.createElement("div");
-  h.innerHTML = rendered;
-  document.body.append(h);
-  // var item=document.createElement('li')
-  // item.innerText=`from:${msg.from} msg:${msg.text} time:${msg.time}`
-  // document.body.appendChild(item)
+  let res = stringToHTML(rendered);
+  document.querySelector(".main").append(res.getElementsByTagName("div")[0]);
 });
 // server disconnection
 socket.on("disconnect", function () {
   console.log(" server disconnected");
 });
-document.querySelector("#send").onclick = function (e) {
-  e.preventDefault();
+// reciving msg
+socket.on('other',function(msg){
+  let template = document.getElementById("otherMsg").innerHTML;
+  let rendered = Mustache.render(template, {
+    name:capitalize(msg.from),
+    msg: msg.text,
+    time: moment().format("LT"),
+  });
+  let res = stringToHTML(rendered);
+  document.querySelector(".main").append(res.getElementsByTagName("div")[0]);
+})
+// sending msg to server
+document.querySelector("body > span").onclick = function (e) {
+  console.log("click");
   // to server
-  if (document.forms[0].msg.value != "") {
+  if (t.value != "") {
     socket.emit("createmsg", {
       from: parsedUrl.searchParams.get("usr"),
-      text: document.forms[0].msg.value,
-      room: parsedUrl.searchParams.get("room")
+      text: t.value,
+      room: parsedUrl.searchParams.get("room"),
     });
-    document.forms[0].reset();
+    // rendering
+    let template = document.getElementById("meMsg").innerHTML;
+    let rendered = Mustache.render(template, {
+      msg: t.value,
+      time: moment().format("LT"),
+    });
+    let res = stringToHTML(rendered);
+    document.querySelector(".main").append(res.getElementsByTagName("div")[0]);
+    t.value = "";
   }
 };
