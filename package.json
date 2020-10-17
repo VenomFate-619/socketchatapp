@@ -4,14 +4,15 @@
   "description": "socket pratice",
   "main": "app.js",
   "scripts": {
-    "start": "nodemon app"
-
+    "start": "node app",
+    "dev":"nodemon app"
   },
   "author": "Amaan",
   "license": "ISC",
   "dependencies": {
-    "@joeattardi/emoji-button": "^4.0.2",
+    "@joeattardi/emoji-button": "^4.2.0",
     "body-parser": "^1.19.0",
+    "cors": "^2.8.5",
     "express": "^4.17.1",
     "moment": "^2.27.0",
     "mustache": "^4.0.1",

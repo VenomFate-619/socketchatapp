@@ -1,6 +1,5 @@
 // emoji pack
-// import { EmojiButton } from "../../node_modules/@joeattardi/emoji-button/dist/index.js";
-// import { EmojiButton } from '@joeattardi/emoji-button';
+// import { EmojiButton } from "./node_modules/@joeattardi/emoji-button/dist/index";
 // util
 var stringToHTML = function (str) {
   var parser = new DOMParser();
@@ -23,8 +22,9 @@ const capitalize = (text) => {
   converted = converted.trim();
   return converted;
 };
+
 var t = document.querySelector(".input textarea");
-var trigger = document.getElementById("trigger");
+// var trigger = document.getElementById("trigger");
 // const picker = new EmojiButton({
 //   theme: "auto",
 //   autoHide: false,
@@ -67,6 +67,9 @@ socket.on("connect", function () {
 });
 // participate
 socket.on("updateUsersList", function (user) {
+  // update users number
+  var no=document.querySelector("body > div.intro > div.part > div.no > span");
+  no.innerHTML=user.length+" "
   let template = document.getElementById("member").innerHTML;
   var member = document.querySelector(
     "body > div.intro > div.part > div.member"
@@ -74,7 +77,7 @@ socket.on("updateUsersList", function (user) {
   if (member.innerHTML != "") {
     member.innerHTML = "";
   }
-  console.log(user);
+  // console.log(user);
   user.forEach((element) => {
     if (element !== query.usr) {
       let rendered = Mustache.render(template, {
@@ -98,7 +101,7 @@ socket.on("serverMsg", (msg) => {
 });
 // server disconnection
 socket.on("disconnect", function () {
-  console.log(" server disconnected");
+  alert(" server disconnected");
 });
 // reciving msg
 socket.on('other',function(msg){
@@ -113,7 +116,6 @@ socket.on('other',function(msg){
 })
 // sending msg to server
 document.querySelector("body > span").onclick = function (e) {
-  console.log("click");
   // to server
   if (t.value != "") {
     socket.emit("createmsg", {
@@ -132,3 +134,4 @@ document.querySelector("body > span").onclick = function (e) {
     t.value = "";
   }
 };
+

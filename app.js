@@ -1,7 +1,7 @@
 const express = require("express");
 const app = express();
-const path = require("path");
 const http = require("http").createServer(app);
+const cors=require('cors')
 let io = require("socket.io")(http);
 var valid = require("./public/js/validation.js");
 const port = process.env.PORT || 8000;
@@ -14,7 +14,7 @@ app.use(express.static("public"));
 var bodyparser = require("body-parser");
 app.use(bodyparser.json());
 app.use(bodyparser.urlencoded({ extended: false }));
-
+app.use(cors({'Content-Type': 'text/html'}))
 // route
 app.get("/", (req, res) => res.sendFile("html/form.html", { root: "public" }));
 app.get("/chat", (req, res) =>
@@ -22,7 +22,7 @@ app.get("/chat", (req, res) =>
 );
 // io
 io.on("connection", (socket) => {
-  console.log("a New user just  connected");
+  // console.log("a New user just  connected");
   socket.on("join", (query, callback) => {
     if ((!valid(query.usr)) || (!valid(query.room))) {
      return  callback("name and room is required");
@@ -39,7 +39,7 @@ io.on("connection", (socket) => {
 
   // msg from cleint
   socket.on("createmsg", (msg) => {
-    console.log("client", msg);
+    // console.log("client", msg);
     // msg to all client
     socket.broadcast.to(msg.room).emit('other',generator(msg.from,msg.text))
     // io.to(msg.room).emit("serverMsg", generator(msg.from, msg.text));
